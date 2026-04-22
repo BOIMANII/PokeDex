@@ -24,7 +24,7 @@ public abstract class Move implements Printable {
 		setName(name);
 		setType(type);
 		setPower(power);
-		setAccuracy(accuracy);
+		setAccuracy(accuracy);// hi im alive
 	}
 
 	// Getters for each variable

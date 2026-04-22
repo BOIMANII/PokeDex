@@ -44,7 +44,7 @@ public class Main {
 		
 		// Call setLevel() to change one OwnedPokemon's level, then call printInfo() again and confirm the stats changed
 		ownedVenusaur.setLevel(67);
-		ownedVenusaur.printInfo();
+		ownedV enusaur.printInfo();
 		
 		// Call setCurrentHp(0) on one OwnedPokemon and use isFainted() to confirm it returns true
 		ownedVenusaur.setCurrentHp(0);

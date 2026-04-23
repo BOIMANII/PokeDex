@@ -15,12 +15,12 @@ package pokeDex;
 public abstract class Move implements Printable{
 	
 	private String name;
-	private String type;
+	private Type type;
 	private int power;
 	private int accuracy;
 	
 	// Constructor for each variable
-	public Move(String name, String type, int power, int accuracy) {
+	public Move(String name, Type type, int power, int accuracy) {
 		setName(name);
 		setType(type);
 		setPower(power);
@@ -29,7 +29,7 @@ public abstract class Move implements Printable{
 	
 	// Getters for each variable
 	public String getName() {return name;}
-	public String getType() {return type;}
+	public Type getType() {return type;}
 	public int getPower() {return power;}
 	public int getAccuracy() {return accuracy;}
 	
@@ -62,15 +62,8 @@ public abstract class Move implements Printable{
 	 * 
 	 * @param typeSelected The type of the move entered when the move object is initialized
 	 */
-	public void setType(String typeSelected) {
-		String[] types = {"NORMAL", "FIRE", "WATER", "GRASS", "ELECTRIC", "ICE", "FIGHTING", "POISON", "GROUND", "FLYING", "PSYCHIC", "BUG", "ROCK", "GHOST", "DRAGON", "STEEL", "DARK", "Fairy"};
-		for (String type : types) {
-			if (type.equalsIgnoreCase(typeSelected)) {
-				this.type = typeSelected;
-				return;
-			}
-		}
-		System.out.println("Invalid type entry: Must choose from existing types");
+	public void setType(Type typeSelected) {
+		this.type = typeSelected;
 	}
 	
 	/**

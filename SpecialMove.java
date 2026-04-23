@@ -5,7 +5,7 @@ public class SpecialMove extends Move{
 	public String getCategory() {
 		return "Special";
 	}
-	public SpecialMove(String name, String type, int power, int accuracy) {
+	public SpecialMove(String name, Type type, int power, int accuracy) {
 		super(name, type, power, accuracy);
 	}
 }

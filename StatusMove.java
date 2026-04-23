@@ -8,7 +8,7 @@ package pokeDex;
 
 public class StatusMove extends Move{
 	
-	public StatusMove(String name, String type, int accuracy) {
+	public StatusMove(String name, Type type, int accuracy) {
 		super(name, type, 0, accuracy);
 	}
 	

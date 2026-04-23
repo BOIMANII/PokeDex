@@ -3,8 +3,8 @@ package pokeDex;
 public class Pokemon {
 	private String name;
 	private int pokedex;
-	private String type1;
-	private String type2;
+	private Type type1;
+	private Type type2;
 	private int hp;
 	private int atk;
 	private int def;
@@ -13,7 +13,7 @@ public class Pokemon {
 	private int spe;
 	
 	//Construction 
-	public Pokemon(String name, int pokedex, String type1, String type2, int hp, int atk, int def, int spA, int spD, int spe) {
+	public Pokemon(String name, int pokedex, Type type1, Type type2, int hp, int atk, int def, int spA, int spD, int spe) {
 		setName(name);
 		setDex(pokedex);
 		setType1(type1);
@@ -25,7 +25,7 @@ public class Pokemon {
 		setSpD(spD);
 		setSpe(spe);
 	}
-	public Pokemon(String name, int pokedex, String type1, int hp, int atk, int def, int spA, int spD, int spe) {
+	public Pokemon(String name, int pokedex, Type type1, int hp, int atk, int def, int spA, int spD, int spe) {
 		this.name = name;
 		this.pokedex = pokedex;
 		this.type1 = type1;
@@ -40,8 +40,8 @@ public class Pokemon {
 	//Getters
 	public String getName() { return name;}
 	public int getDex() { return pokedex;}
-	public String getType1() { return type1;}
-	public String getType2() { return type2;}
+	public Type getType1() { return type1;}
+	public Type getType2() { return type2;}
 	public int getHp() { return hp;}
 	public int getAtk() { return atk;}
 	public int getDef() { return def;}
@@ -62,26 +62,12 @@ public class Pokemon {
 	    this.pokedex = pokedex;
 	}
 
-	public void setType1(String type1) {
-		String[] types = {"NORMAL", "FIRE", "WATER", "GRASS", "ELECTRIC", "ICE", "FIGHTING", "POISON", "GROUND", "FLYING", "PSYCHIC", "BUG", "ROCK", "GHOST", "DRAGON", "STEEL", "DARK", "Fairy"};
-		for (String type : types) {
-			if (type.equalsIgnoreCase(type1)) {
-				this.type1 = type1;
-				return;
-			}
-		}
-		System.out.println("Invalid type entry: Must choose from existing types");
+	public void setType1(Type type1) {
+		this.type1 = type1;
 	}
 
-	public void setType2(String type2) {
-		String[] types = {"NORMAL", "FIRE", "WATER", "GRASS", "ELECTRIC", "ICE", "FIGHTING", "POISON", "GROUND", "FLYING", "PSYCHIC", "BUG", "ROCK", "GHOST", "DRAGON", "STEEL", "DARK", "Fairy"};
-		for (String type : types) {
-			if (type.equalsIgnoreCase(type2)) {
-				this.type2 = type2;
-				return;
-			}
-		}
-		System.out.println("Invalid type entry: Must choose from existing types");
+	public void setType2(Type type2) {
+		this.type2 = type2;
 	}
 
 	public void setHp(int hp) {

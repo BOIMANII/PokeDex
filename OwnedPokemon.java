@@ -55,7 +55,7 @@ public class OwnedPokemon implements Printable {
         System.out.println("--- Pokemon Info ---");
         System.out.println("Name     : " + base.getName());
         System.out.println("Level    : " + level);
-        System.out.println("Type     : " + base.getType1());
+        System.out.println("Type     : " + base.getType1() + "/" + base.getType2());
 
         // Build move name list
         System.out.print("Moves    : ");

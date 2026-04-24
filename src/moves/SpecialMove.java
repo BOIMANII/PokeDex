@@ -1,4 +1,6 @@
-package pokeDex;
+package moves;
+
+import pokemon.Type;
 
 public class SpecialMove extends Move{
 	@Override

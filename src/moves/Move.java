@@ -10,7 +10,11 @@
  * Implements Printable
  */
 
-package pokeDex;
+package moves;
+
+import pokemon.Printable;
+import pokemon.StatusCondition;
+import pokemon.Type;
 
 public abstract class Move implements Printable {
 

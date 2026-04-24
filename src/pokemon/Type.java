@@ -1,4 +1,4 @@
-package pokeDex;
+package pokemon;
 // DO NOT ALTER PER INSTRUCTIONS
 // Defines Pokemon types and the effectiveness multipliers between them.
 public enum Type {

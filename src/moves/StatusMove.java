@@ -4,7 +4,10 @@
  * Description: Status move subclass of Move.java
  */
 
-package pokeDex;
+package moves;
+
+import pokemon.StatusCondition;
+import pokemon.Type;
 
 public class StatusMove extends Move {
 

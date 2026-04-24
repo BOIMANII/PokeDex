@@ -1,4 +1,6 @@
-package pokeDex;
+package pokemon;
+
+import moves.Move;
 
 public class OwnedPokemon implements Printable {
 

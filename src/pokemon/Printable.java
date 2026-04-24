@@ -4,7 +4,7 @@
  * Description: Interface
  */
 
-package pokeDex;
+package pokemon;
 
 public interface Printable {
 	

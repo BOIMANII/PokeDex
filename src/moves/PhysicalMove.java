@@ -1,4 +1,6 @@
-package pokeDex;
+package moves;
+
+import pokemon.Type;
 
 public class PhysicalMove extends Move{
 	

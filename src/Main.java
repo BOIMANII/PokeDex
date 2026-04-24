@@ -9,7 +9,14 @@
  * Initializes and uses each other class apart from Move.java
  */
 
-package pokeDex;
+
+import moves.Move;
+import moves.PhysicalMove;
+import moves.SpecialMove;
+import moves.StatusMove;
+import pokemon.OwnedPokemon;
+import pokemon.Pokemon;
+import pokemon.Type;
 
 public class Main {
 	

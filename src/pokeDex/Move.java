@@ -15,30 +15,65 @@ package pokeDex;
 public abstract class Move implements Printable {
 
 	private String name;
-	private String type;
+	private Type type;
 	private int power;
 	private int accuracy;
-//	private StatusCondition statusEffect; 
 	private double statusChance = 0.0;
+	private StatusCondition statusEffect;
+
+	protected void setStatusChance(double statusChance) {
+		this.statusChance = statusChance;
+	}
+
+	protected void setStatAffected(String statAffected) {
+		this.statAffected = statAffected;
+	}
+
+	protected void setStatStages(int statStages) {
+		this.statStages = statStages;
+	}
+
+	protected void setStatAffectsUser(boolean statAffectsUser) {
+		this.statAffectsUser = statAffectsUser;
+	}
+
+	public double getStatusChance() {
+		return statusChance;
+	}
+
+	public String getStatAffected() {
+		return statAffected;
+	}
+
+	public int getStatStages() {
+		return statStages;
+	}
+
+	public boolean isStatAffectsUser() {
+		return statAffectsUser;
+	}
+
 	private String statAffected;
 	private int statStages = 0;
 
 	private boolean statAffectsUser = false;
-	
+
 	// Constructor for each variable
-	public Move(String name, String type, int power, int accuracy) {
+	public Move(String name, Type type, int power, int accuracy) {
 		setName(name);
 		setType(type);
 		setPower(power);
 		setAccuracy(accuracy);
 	}
 
+	
+
 	// Getters for each variable
 	public String getName() {
 		return name;
 	}
 
-	public String getType() {
+	public Type getType() {
 		return type;
 	}
 
@@ -67,16 +102,8 @@ public abstract class Move implements Printable {
 		this.name = name;
 	}
 
-	public void setType(String typeSelected) {
-		String[] types = { "NORMAL", "FIRE", "WATER", "GRASS", "ELECTRIC", "ICE", "FIGHTING", "POISON", "GROUND",
-				"FLYING", "PSYCHIC", "BUG", "ROCK", "GHOST", "DRAGON", "STEEL", "DARK", "Fairy" };
-		for (String type : types) {
-			if (type.equalsIgnoreCase(typeSelected)) {
-				this.type = typeSelected;
-				return;
-			}
-		}
-		System.out.println("Invalid type entry: Must choose from existing types");
+	public void setType(Type type) {
+		this.type = type;
 	}
 
 	public void setPower(int power) {
@@ -93,6 +120,14 @@ public abstract class Move implements Printable {
 			return;
 		}
 		System.out.println("Invalid accuracy entry: Must be between 0 and 100 inclusive");
+	}
+
+	public StatusCondition getStatusEffect() {
+		return statusEffect;
+	}
+
+	protected void setStatusEffect(StatusCondition statusEffect) {
+		this.statusEffect = statusEffect;
 	}
 
 }

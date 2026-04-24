@@ -1,103 +1,55 @@
-package pokeDex;
-import java.util.ArrayList;
-
 /**
  * @author Andy
  * @author Max
  * @author Anthony
- * @date 10 04 2026
+ * @date 2026-04-10
  * @teacher Mr. Smintich
+ * 
+ * Main class of the Pokemon battle game program
+ * Initializes and uses each other class apart from Move.java
  */
+
+package pokeDex;
 
 public class Main {
 	
-	private static ArrayList<Pokemon> Collection = new ArrayList(); // Define Collection ArrayList
-	
-	private static ArrayList<Move> Moves = new ArrayList(); // Define Move Collection
 	public static void main(String[] args) {
 		
 		// Declare + Initialize Pokemons
 		// Variable in order: Name PokeDex Type1 Type2 hp attack defense spA spD spE
-		Pokemon Charizard = new Pokemon("Charizard", 6, "FIRE", "FLYING", 78, 84, 78, 109, 85, 100);
-		Pokemon Venusaur = new Pokemon("Venusaur", 3, "GRASS", "POISON", 80, 82, 83, 100, 100, 80);
-		
+		Pokemon charizard = new Pokemon("Charizard", 6, Type.FIRE, Type.FLYING, 78, 84, 78, 109, 85, 100);
+		Pokemon venusaur = new Pokemon("Venusaur", 3, Type.GRASS, Type.POISON, 80, 82, 83, 100, 100, 80);
+
 //		Charizard MoveSet
-		Move AirSlash = new SpecialMove("Air Slash", "FLYING", 75, 95);
-		Move DragonClaw = new PhysicalMove("Dragon Claw", "DRAGON", 80, 100);
-		Move Ember = new SpecialMove("Ember", "FIRE", 40, 100);
-		Move SmokeScreen = new StatusMove("SmokeScreen", "NORMAL", 100);
+		Move airSlash = new SpecialMove("Air Slash", Type.FLYING, 75, 95);
+		Move dragonClaw = new PhysicalMove("Dragon Claw", Type.DRAGON, 80, 100);
+		Move ember = new SpecialMove("Ember", Type.FIRE, 40, 100);
+		Move smokeScreen = new StatusMove("SmokeScreen", Type.NORMAL, 100);
 //		Venusaur MoveSet
-		Move PetalBlizzard = new PhysicalMove("Petal Blizzard", "GRASS", 90, 100);
-		Move Growl = new StatusMove("Growl", "NORMAL", 100);
-		Move Tackle = new PhysicalMove("Tackle", "NORMAL", 40, 100);
-		Move VineWhip = new PhysicalMove("Vine Whip", "GRASS", 45, 100);
+		Move petalBlizzard = new PhysicalMove("Petal Blizzard", Type.GRASS, 90, 100);
+		Move growl = new StatusMove("Growl", Type.NORMAL, 100);
+		Move tackle = new PhysicalMove("Tackle", Type.NORMAL , 40, 100);
+		Move vineWhip = new PhysicalMove("Vine Whip", Type.GRASS, 45, 100);
 		
 		// Create 2 OwnedPokemon objects
 		// Variables in order: Pokemon base, int level, Move[] moves
-		Move[] charizardMoves = {AirSlash, DragonClaw, Ember, SmokeScreen};
-		OwnedPokemon charizard = new OwnedPokemon(Charizard, 88, charizardMoves);
-		Move[] venusaurMoves = {PetalBlizzard, Growl, Tackle, VineWhip};
-		OwnedPokemon venusaur = new OwnedPokemon(Venusaur, venusaurMoves);
+		Move[] charizardMoves = {airSlash, dragonClaw, ember, smokeScreen};
+		OwnedPokemon ownedCharizard = new OwnedPokemon(charizard, 88, charizardMoves);
+		Move[] venusaurMoves = {petalBlizzard, growl, tackle, vineWhip};
+		OwnedPokemon ownedVenusaur = new OwnedPokemon(venusaur, venusaurMoves);
 		
 		// Call printInfo() on each OwnedPokemon object to display their computed stats
-		charizard.printInfo();
-		venusaur.printInfo();
+		ownedCharizard.printInfo();
+		ownedVenusaur.printInfo();
 		
 		// Call setLevel() to change one OwnedPokemon's level, then call printInfo() again and confirm the stats changed
-		venusaur.setLevel(67);
+		ownedVenusaur.setLevel(67);
 		venusaur.printInfo();
 		
 		// Call setCurrentHp(0) on one OwnedPokemon and use isFainted() to confirm it returns true
-		venusaur.setCurrentHp(0);
-		System.out.println("Is venusaur fainted? " + venusaur.isFainted());
+		ownedVenusaur.setCurrentHp(0);
+		System.out.println("Is venusaur fainted? " + ownedVenusaur.isFainted());
 		
-		
-		
-		
-		
-		// Code below is not requested in part 2 and is left over from part 1's extension
-		
-		
-		
-		
-		
-		
-		
-//		Add Both to Collection ArrayList
-		Collection.add(Charizard);
-		Collection.add(Venusaur);
-		
-		/*
-		 * Declare + Initialize Moves Variables in order: Name Type Power Accuracy
-		 * Category
-		 */
-
-//		Add all moves to collection. 
-		Moves.add(AirSlash);
-		Moves.add(DragonClaw);
-		Moves.add(Ember);
-		Moves.add(SmokeScreen);
-		Moves.add(PetalBlizzard);
-		Moves.add(Growl);
-		Moves.add(Tackle);
-		Moves.add(VineWhip);
-
-//		Print out Values with getters, change 1 value and print again
-		System.out.println("Charziard's attack: " + Charizard.getAtk());
-		System.out.println("Charziard's defense: " + Charizard.getDef());
-		// Set different value, print again to verify
-		Charizard.setAtk(88);
-		System.out.println("Charziard's attack after setting different value: " + Charizard.getAtk());
-		System.out.println();
-		
-		for (Pokemon i : Collection) {
-			i.printInfo();
-			System.out.println();
-		}
-		for (Move i : Moves) {
-			i.printInfo();
-			System.out.println();
-		}
-	}
+	}	
 
 }

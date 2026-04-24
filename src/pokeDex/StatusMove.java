@@ -6,12 +6,28 @@
 
 package pokeDex;
 
-public class StatusMove extends Move{
-	
-	public StatusMove(String name, String type, int accuracy) {
+public class StatusMove extends Move {
+
+	public StatusMove(String name, Type type, int accuracy) {
 		super(name, type, 0, accuracy);
 	}
-	
+
+	public StatusMove(String name, Type type, int accuracy, StatusCondition statusEffect, double statusChance,
+			boolean affectsUser) {
+		super(name, type, 0, accuracy);
+		setStatusChance(statusChance);
+		setStatusEffect(statusEffect);
+
+	}
+
+	public StatusMove(String name, Type type, int accuracy, String statAffected, double statusChance,
+			boolean affectsUser) {
+		super(name, type, 0, accuracy);
+		setStatusChance(statusChance);
+		setStatAffectsUser(affectsUser);
+
+	}
+
 	@Override
 	public String getCategory() {
 		return "Status";

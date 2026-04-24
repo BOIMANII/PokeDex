@@ -118,7 +118,12 @@ public class Pokemon {
 	    this.spe = spe;
 	}
 	
-	// Prints out pokemon information in rows. 
+	/**
+	 * Prints out pokemon information in rows. 
+	 * 
+	 * @param
+	 * @return
+	 */
 	public void printInfo() {
 		System.out.println("Name: " + this.name);
 		System.out.println("Index: " + this.pokedex);

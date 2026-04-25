@@ -40,7 +40,10 @@ public class Trainer {
 	public int getActivePokemonIndex() {
 		return activePokemonIndex;
 	}
-
+	public OwnedPokemon getActivePokemon() {
+		return team[getActivePokemonIndex()];
+	}
+ 
 	// This method determines lost by checking Faint status of all 3 team members.
 	public boolean hasLost() {
 		return team[0].isFainted() && team[1].isFainted() && team[2].isFainted();

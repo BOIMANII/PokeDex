@@ -9,6 +9,11 @@ public class OwnedPokemon implements Printable {
     private Move[] moves;
     private int maxHp, currentHp;
     private int currentAtk, currentDef, currentSpA, currentSpD, currentSpe;
+    private StatusCondition status;
+    private int sleepCounter;
+    private int atkStage;
+    private int defStage;
+    private int speStage;
 
 //    normal constructor, with level validation.
     public OwnedPokemon(Pokemon base, int level, Move[] moves) {
@@ -75,7 +80,23 @@ public class OwnedPokemon implements Printable {
     public int getCurrentSpA()   { return currentSpA; }
     public int getCurrentSpD()   { return currentSpD; }
     public int getCurrentSpe()   { return currentSpe; }
-
+    public StatusCondition getStatus() { return status;}
+    public int getEffectiveAtk() {
+    	if(status.equals(StatusCondition.BURNED)) {
+    		return (currentAtk * atkStage)/2;
+    	}
+    	return currentAtk * atkStage;
+    }
+    public int getEffectiveDef() {
+    	return currentDef * defStage;
+    }
+    public int getEffectiveSpe() {
+    	if(status.equals(StatusCondition.PARALYZED)) {
+    		return (currentSpe * speStage)/2;
+    	}
+    	return currentSpe * speStage;
+    }
+    
     // setCurrentHp, validation within bounds
     public void setCurrentHp(int hp) {
         if (hp < 0)          this.currentHp = 0;
@@ -92,6 +113,54 @@ public class OwnedPokemon implements Printable {
         this.level = level;
         recalculateStats();
     }
+    
+    public void applyStatus(StatusCondition s) {
+    	this.status = s;
+    	if(status.equals(StatusCondition.ASLEEP)) {
+    		sleepCounter = (int)(Math.random() * (3 - 1 + 1)) + 1;
+    	}
+    }
+    
+    public void applyStatChange(String stat, int stages) {
+    	if(stages > 6 || stages < -6) {
+    		System.out.println("Invalid stage");
+    		return;
+    	}
+    	if(stat.equalsIgnoreCase("atk")) {
+    		this.atkStage = stages;
+    	}
+    	if(stat.equalsIgnoreCase("def")) {
+    		this.defStage = stages;
+    	}
+    	if(stat.equalsIgnoreCase("spe")) {
+    		this.speStage = stages;
+    	}
+    }
+    
+    public void applyEndOfTurnEffects() {
+    	if(status.equals(StatusCondition.BURNED) || status.equals(StatusCondition.POISONED)){
+    		this.currentHp -= maxHp * (1/16);
+    		if(currentHp < 0) {
+    			this.currentHp = 0;
+    		}
+    	}
+    	if(status.equals(StatusCondition.ASLEEP)) {
+    		sleepCounter -= 1;
+    		if(sleepCounter == 0) {
+    			this.status = StatusCondition.NONE;
+    		}
+    	}
+    }
+    
+    public void resetBattleState() {
+    	currentHp = maxHp;
+    	atkStage = 0;
+    	defStage = 0;
+    	speStage = 0;
+    	sleepCounter = 0;
+    	status = StatusCondition.NONE;
+    }
+
 
     public boolean isFainted() {
         return currentHp == 0;

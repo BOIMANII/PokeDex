@@ -12,13 +12,50 @@
 
 package pokeDex;
 
-public abstract class Move implements Printable{
-	
+public abstract class Move implements Printable {
+
 	private String name;
 	private Type type;
 	private int power;
 	private int accuracy;
-	
+	private double statusChance = 0.0;
+	private StatusCondition statusEffect = StatusCondition.NONE;
+	private String statAffected;
+	private int statStages = 0;
+	private boolean statAffectsUser = false;
+
+	protected void setStatusChance(double statusChance) {
+		this.statusChance = statusChance;
+	}
+
+	protected void setStatAffected(String statAffected) {
+		this.statAffected = statAffected;
+	}
+
+	protected void setStatStages(int statStages) {
+		this.statStages = statStages;
+	}
+
+	protected void setStatAffectsUser(boolean statAffectsUser) {
+		this.statAffectsUser = statAffectsUser;
+	}
+
+	public double getStatusChance() {
+		return statusChance;
+	}
+
+	public String getStatAffected() {
+		return statAffected;
+	}
+
+	public int getStatStages() {
+		return statStages;
+	}
+
+	public boolean isStatAffectsUser() {
+		return statAffectsUser;
+	}
+
 	// Constructor for each variable
 	public Move(String name, Type type, int power, int accuracy) {
 		setName(name);
@@ -26,22 +63,33 @@ public abstract class Move implements Printable{
 		setPower(power);
 		setAccuracy(accuracy);
 	}
+
 	
+
 	// Getters for each variable
-	public String getName() {return name;}
-	public Type getType() {return type;}
-	public int getPower() {return power;}
-	public int getAccuracy() {return accuracy;}
+	public String getName() {
+		return name;
+	}
+
+	public Type getType() {
+		return type;
+	}
+
+	public int getPower() {
+		return power;
+	}
+
+	public int getAccuracy() {
+		return accuracy;
+	}
 	
+	public StatusCondition getStatus() {
+		return statusEffect;
+	}
+
 	// Methods
 	public abstract String getCategory();
-	
-	/**
-	 * Prints information on the move
-	 * 
-	 * @param
-	 * @return
-	 */
+
 	@Override
 	public void printInfo() {
 		System.out.println("Move name: " + name);
@@ -50,28 +98,16 @@ public abstract class Move implements Printable{
 		System.out.println("Power: " + power);
 		System.out.println("Accuracy: " + accuracy);
 	}
-	
+
 	// Setters for each variable
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	/**
-	 * Setter for type
-	 * Data validation - only one of the 18 types are valid
-	 * 
-	 * @param typeSelected The type of the move entered when the move object is initialized
-	 */
-	public void setType(Type typeSelected) {
-		this.type = typeSelected;
+
+	public void setType(Type type) {
+		this.type = type;
 	}
-	
-	/**
-	 * Setter for power with in built data validation
-	 * Power is an integer 0 or above
-	 * 
-	 * @param power inputed power of the move
-	 */
+
 	public void setPower(int power) {
 		if (power >= 0) {
 			this.power = power;
@@ -79,19 +115,21 @@ public abstract class Move implements Printable{
 		}
 		System.out.println("Invalid power entry: Power cannot be negative");
 	}
-	
-	/**
-	 * Setter for accuracy
-	 * Data validation - accuracy is an integer between 0 and 100 inclusive
-	 * 
-	 * @param accuracy
-	 */
+
 	public void setAccuracy(int accuracy) {
 		if (accuracy >= 0 && accuracy <= 100) {
 			this.accuracy = accuracy;
 			return;
 		}
 		System.out.println("Invalid accuracy entry: Must be between 0 and 100 inclusive");
+	}
+
+	public StatusCondition getStatusEffect() {
+		return statusEffect;
+	}
+
+	protected void setStatusEffect(StatusCondition statusEffect) {
+		this.statusEffect = statusEffect;
 	}
 
 }

@@ -1,4 +1,4 @@
-package pokeDex;
+package pokemon;
 
 public class Pokemon {
 	private String name;
@@ -118,12 +118,7 @@ public class Pokemon {
 	    this.spe = spe;
 	}
 	
-	/**
-	 * Prints out pokemon information in rows. 
-	 * 
-	 * @param
-	 * @return
-	 */
+	// Prints out pokemon information in rows. 
 	public void printInfo() {
 		System.out.println("Name: " + this.name);
 		System.out.println("Index: " + this.pokedex);

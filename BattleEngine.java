@@ -248,7 +248,11 @@ public class BattleEngine {
 				System.out.println(pokemon.getBase().getName() + " has fainted - switching pokemon");
 				trainer.switchToNext();
 			} else if (pokemon.isFainted() && trainer.hasLost()) {
-				System.out.println(trainer.getActivePokemon().getBase().getName() + " has fainted - computer wins!");
+				if (trainer.getName().equalsIgnoreCase("computer")) {
+					System.out.println(trainer.getActivePokemon().getBase().getName() + " has fainted - you win!");
+				} else {
+					System.out.println(trainer.getActivePokemon().getBase().getName() + " has fainted - computer wins!");
+				}
 			}
 		} else if (pokemon.getStatus() == StatusCondition.ASLEEP && pokemon.getSleepCounter() > 0) {
 			pokemon.setSleepCounter(pokemon.getSleepCounter() - 1);
@@ -269,23 +273,21 @@ public class BattleEngine {
 	public void startBattle() {
 		boolean first = true;
 		while (player.hasLost() == false && computer.hasLost() == false) {
+			if (first == true) {
+				computer.getActivePokemon().printInfo();
+				player.getActivePokemon().printInfo();
+			}
+			System.out.print("Enter which move you want to do (please enter an integer 1 - 4): ");
+			int selection = newSelection(first);
+			first = false;
+			System.out.println();
+			if (selection != 0) {
+				Move playerSelection = player.getActivePokemon().getMoves()[selection - 1];
+				Move computerSelection = computer.getActivePokemon().getMoves()[rand.nextInt(0,4)];
+				executeTurn(playerSelection, computerSelection);
+			}
 			computer.getActivePokemon().printInfo();
 			player.getActivePokemon().printInfo();
-			try {
-				System.out.print("Enter which move you want to do (please enter an integer 1 - 4): ");
-				int selection = newSelection(first);
-				first = false;
-				System.out.println();
-				if (selection > 4 || selection < 1) {
-					System.out.println("Please choose an integer 1-4 inclusive");
-				} else {
-					Move playerSelection = player.getActivePokemon().getMoves()[selection - 1];
-					Move computerSelection = computer.getActivePokemon().getMoves()[rand.nextInt(0,4)];
-					executeTurn(playerSelection, computerSelection);
-				}
-			} catch (Exception e) {
-				System.out.println("Incorrect entry format, try again");
-			}
 		}
 	}
 	

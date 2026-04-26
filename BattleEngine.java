@@ -9,7 +9,6 @@
 package pokeDex;
 
 import java.util.Scanner;
-import java.util.ArrayList;
 import java.util.Random;
 
 public class BattleEngine {
@@ -200,7 +199,7 @@ public class BattleEngine {
 		// Execute computer first turn if applicable
 		} else {
 			// Computer first
-			executeAttack(computer.getActivePokemon(), playerMove, player.getActivePokemon());
+			executeAttack(computer.getActivePokemon(), computerMove, player.getActivePokemon());
 			if (player.getActivePokemon().isFainted() && player.hasLost() == false) {
 				System.out.println(player.getActivePokemon().getBase().getName() + " has fainted - switching pokemon");
 				player.switchToNext();
@@ -215,7 +214,7 @@ public class BattleEngine {
 				return;
 			}
 			// Player next, assuming they survive
-			executeAttack(player.getActivePokemon(), computerMove, computer.getActivePokemon());
+			executeAttack(player.getActivePokemon(), playerMove, computer.getActivePokemon());
 			if (computer.getActivePokemon().isFainted() && computer.hasLost() == false) {
 				System.out.println(computer.getActivePokemon().getBase().getName() + " has fainted - switching pokemon");
 				computer.switchToNext();

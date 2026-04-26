@@ -16,6 +16,8 @@ import java.util.ArrayList;
 
 public class Main {
 	
+	public static Scanner sc = new Scanner(System.in);
+	
 	public static void main(String[] args) {
 		
 		// Declare + Initialize Pokemons
@@ -74,8 +76,6 @@ public class Main {
 		Move[] slowbroMoves = {tackle, zenHeadbutt, psychic, surf};
 		OwnedPokemon ownedSlowbro = new OwnedPokemon(slowBro, slowbroMoves);
 		
-		Scanner sc = new Scanner(System.in);
-		
 		// Get game set up
 		System.out.print("Enter name: ");
 		String name = sc.nextLine();
@@ -90,6 +90,7 @@ public class Main {
 		computerPokemonsList.add(ownedSlowbro);
 		ArrayList<OwnedPokemon> playerPokemonsList = new ArrayList<>();
 		ArrayList<Integer> alreadyChosen = new ArrayList<>();
+		boolean first = true;
 		while(!(alreadyChosen.size() == 3)) {
 			System.out.println("Pokemon:");
 			System.out.println("1. Charizard");
@@ -99,13 +100,9 @@ public class Main {
 			System.out.println("5. Arbok");
 			System.out.println("6. Slowbro");
 			System.out.print("Choose 3 pokemon (enter corresponding integer): ");
-			int selection = 0;
-			try {
-				selection = sc.nextInt();
-				sc.nextLine();
-			} catch (Exception e) {
-				System.out.println("Invalid selection, try again");
-			}
+			// TODO selection
+			int selection = newSelection(alreadyChosen, first);
+			first = false;
 			if (selection == 1 && !alreadyChosen.contains(1)) {
 				playerPokemonsList.add(ownedCharizard);
 				computerPokemonsList.remove(ownedCharizard);
@@ -130,8 +127,6 @@ public class Main {
 				playerPokemonsList.add(ownedSlowbro);
 				computerPokemonsList.remove(ownedSlowbro);
 				alreadyChosen.add(6);
-			} else {
-				System.out.println("Invalid selection - try again");
 			}
 		}
 		
@@ -161,6 +156,39 @@ public class Main {
 			pokemons[i] = pokemonsList.get(i);
 		}
 		return pokemons;
+	}
+	
+	/**
+	 * Lets user enter selection and does data verification
+	 * Returns 0 if invalid selection is made (if it is invalid, or already chosen, or out of bounds)
+	 * Otherwise returns the selection
+	 * Requires a list of selections already made as well as a boolean describing if it is the first time this is called or not
+	 * (For purposes of clearing the scanner before reaching it)
+	 * 
+	 * @param ArrayList<Integer> alreadyChosen
+	 * @param boolean first
+	 * @return
+	 */
+	public static int newSelection(ArrayList<Integer> alreadyChosen, boolean first) {
+		int selection = 0;
+		try {
+			if (first == false) {
+				sc.nextLine();
+			}
+			selection = sc.nextInt();
+			if (selection < 1 || selection > 6) {
+				System.out.println("Out of bounds");
+				return 0;
+			}
+			if (alreadyChosen.contains(selection)) {
+				System.out.println("Already chosen");
+				return 0;
+			}
+		} catch (Exception e) {
+			System.out.println("Invalid selection, try again");
+			return 0;
+		}
+		return selection;
 	}
 
 }

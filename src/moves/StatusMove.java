@@ -5,10 +5,7 @@
  */
 
 package moves;
-
-import pokemon.StatusCondition;
-import pokemon.Type;
-
+import pokemon.*;
 public class StatusMove extends Move {
 
 	public StatusMove(String name, Type type, int accuracy) {
@@ -20,13 +17,16 @@ public class StatusMove extends Move {
 		super(name, type, 0, accuracy);
 		setStatusChance(statusChance);
 		setStatusEffect(statusEffect);
+		setStatAffectsUser(affectsUser);
 
 	}
 
-	public StatusMove(String name, Type type, int accuracy, String statAffected, double statusChance,
+	public StatusMove(String name, Type type, int accuracy, String statAffected, int statStages, double statusChance,
 			boolean affectsUser) {
 		super(name, type, 0, accuracy);
 		setStatusChance(statusChance);
+		setStatAffected(statAffected);
+		setStatStages(statStages);
 		setStatAffectsUser(affectsUser);
 
 	}

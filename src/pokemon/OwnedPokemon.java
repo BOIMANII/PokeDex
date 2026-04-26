@@ -1,7 +1,5 @@
 package pokemon;
-
-import moves.Move;
-
+import moves.*;
 public class OwnedPokemon implements Printable {
 
     private Pokemon base;
@@ -9,11 +7,17 @@ public class OwnedPokemon implements Printable {
     private Move[] moves;
     private int maxHp, currentHp;
     private int currentAtk, currentDef, currentSpA, currentSpD, currentSpe;
-    private StatusCondition status;
+    private StatusCondition status = StatusCondition.NONE;
     private int sleepCounter;
-    private int atkStage;
-    private int defStage;
-    private int speStage;
+    private int atkStageN = 2;
+    private int atkStageD = 2;
+    private double atkStage = atkStageN / atkStageD;
+    private int defStageN = 2;
+    private int defStageD = 2;
+    private double defStage = defStageN / defStageD;
+    private int speStageN = 2;
+    private int speStageD = 2;
+    private double speStage = speStageN / speStageD;
 
 //    normal constructor, with level validation.
     public OwnedPokemon(Pokemon base, int level, Move[] moves) {
@@ -83,19 +87,20 @@ public class OwnedPokemon implements Printable {
     public StatusCondition getStatus() { return status;}
     public int getEffectiveAtk() {
     	if(status.equals(StatusCondition.BURNED)) {
-    		return (currentAtk * atkStage)/2;
+    		return (int) (currentAtk * atkStage)/2;
     	}
-    	return currentAtk * atkStage;
+    	return (int) (currentAtk * atkStage);
     }
     public int getEffectiveDef() {
-    	return currentDef * defStage;
+    	return (int) (currentDef * defStage);
     }
     public int getEffectiveSpe() {
     	if(status.equals(StatusCondition.PARALYZED)) {
-    		return (currentSpe * speStage)/2;
+    		return (int) ((currentSpe * speStage)/2);
     	}
-    	return currentSpe * speStage;
+    	return (int) (currentSpe * speStage);
     }
+    public int getSleepCounter() {return sleepCounter;}
     
     // setCurrentHp, validation within bounds
     public void setCurrentHp(int hp) {
@@ -114,6 +119,10 @@ public class OwnedPokemon implements Printable {
         recalculateStats();
     }
     
+    public void setSleepCounter(int i) {
+    	this.sleepCounter = i;
+    }
+    
     public void applyStatus(StatusCondition s) {
     	this.status = s;
     	if(status.equals(StatusCondition.ASLEEP)) {
@@ -122,19 +131,57 @@ public class OwnedPokemon implements Printable {
     }
     
     public void applyStatChange(String stat, int stages) {
-    	if(stages > 6 || stages < -6) {
-    		System.out.println("Invalid stage");
-    		return;
+    	if (stat.equalsIgnoreCase("atk")) {
+    		if (stages > 0) {
+    			this.atkStageN = this.atkStageN + stages;
+    			if (this.atkStageN > 6) {
+    				this.atkStageN = 6;
+    			}
+    		} else if (stages < 0) {
+    			this.atkStageD = this.atkStageD - stages;
+    			if (this.atkStageD > 6) {
+    				this.atkStageD = 6;
+    			}
+    		}
+    	} //TODO
+    	if (stat.equalsIgnoreCase("def")) {
+    		if (stages > 0) {
+    			this.defStageN = this.defStageN + stages;
+    			if (this.defStageN > 6) {
+    				this.defStageN = 6;
+    			}
+    		} else if (stages < 0) {
+    			this.defStageD = this.defStageD - stages;
+    			if (this.defStageD > 6) {
+    				this.defStageD = 6;
+    			}
+    		}
     	}
-    	if(stat.equalsIgnoreCase("atk")) {
-    		this.atkStage = stages;
+    	if (stat.equalsIgnoreCase("spe")) {
+    		if (stages > 0) {
+    			this.speStageN = this.speStageN + stages;
+    			if (this.speStageN > 6) {
+    				this.speStageN = 6;
+    			}
+    		} else if (stages < 0) {
+    			this.speStageD = this.speStageD - stages;
+    			if (this.speStageD > 6) {
+    				this.speStageD = 6;
+    			}
+    		}
     	}
-    	if(stat.equalsIgnoreCase("def")) {
-    		this.defStage = stages;
+    	
+    	/*
+    	if(stat.equalsIgnoreCase("atk") && this.atkStage + stages < 6 && this.atkStage + stages > -6) {
+    		this.atkStage = this.atkStage + stages;
     	}
-    	if(stat.equalsIgnoreCase("spe")) {
-    		this.speStage = stages;
+    	if(stat.equalsIgnoreCase("def") && this.defStage + stages < 6 && this.defStage + stages > -6) {
+    		this.defStage = this.defStage + stages;
     	}
+    	if(stat.equalsIgnoreCase("spe") && this.speStage + stages < 6 && this.speStage + stages > -6) {
+    		this.speStage = this.speStage + stages;
+    	}
+    	*/
     }
     
     public void applyEndOfTurnEffects() {

@@ -12,7 +12,6 @@
 package battle;
 
 import pokemon.*;
-import moves.*;
 
 public class Trainer {
 //	defining Variables/Attributes
@@ -21,11 +20,9 @@ public class Trainer {
 	private int activePokemonIndex;
 
 	public Trainer(String name, OwnedPokemon[] arr) {
-		if (arr.length < 3) {
-			this.name = name;
-			this.team = arr;
-			this.activePokemonIndex = 0;
-		}
+		this.name = name;
+		this.team = arr;
+		this.activePokemonIndex = 0;
 	}
 
 //	Getters
@@ -37,13 +34,10 @@ public class Trainer {
 		return team;
 	}
 
-	public int getActivePokemonIndex() {
-		return activePokemonIndex;
-	}
 	public OwnedPokemon getActivePokemon() {
-		return team[getActivePokemonIndex()];
+		return team[activePokemonIndex];
 	}
- 
+
 	// This method determines lost by checking Faint status of all 3 team members.
 	public boolean hasLost() {
 		return team[0].isFainted() && team[1].isFainted() && team[2].isFainted();
@@ -51,17 +45,13 @@ public class Trainer {
 
 //	This method switches to next available pokemon
 	public void switchToNext() {
-		do {
-			if (team[getActivePokemonIndex()].isFainted()) {
-				if (getActivePokemonIndex() == 2) {
-					activePokemonIndex = 0;
-				} else {
-					activePokemonIndex++;
-				}
+		if (team[activePokemonIndex].isFainted()) {
+			if (activePokemonIndex == 2) {
+				activePokemonIndex = 0;
+			} else {
+				activePokemonIndex++;
 			}
-
-		} while (!hasLost());
-
+		}
 	}
 
 // Prints out team Information in an organized manner

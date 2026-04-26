@@ -11,10 +11,7 @@
  */
 
 package moves;
-
-import pokemon.Printable;
-import pokemon.StatusCondition;
-import pokemon.Type;
+import pokemon.*;
 
 public abstract class Move implements Printable {
 
@@ -23,7 +20,10 @@ public abstract class Move implements Printable {
 	private int power;
 	private int accuracy;
 	private double statusChance = 0.0;
-	private StatusCondition statusEffect;
+	private StatusCondition statusEffect = StatusCondition.NONE;
+	private String statAffected;
+	private int statStages = 0;
+	private boolean statAffectsUser = false;
 
 	protected void setStatusChance(double statusChance) {
 		this.statusChance = statusChance;
@@ -57,11 +57,6 @@ public abstract class Move implements Printable {
 		return statAffectsUser;
 	}
 
-	private String statAffected;
-	private int statStages = 0;
-
-	private boolean statAffectsUser = false;
-
 	// Constructor for each variable
 	public Move(String name, Type type, int power, int accuracy) {
 		setName(name);
@@ -87,6 +82,10 @@ public abstract class Move implements Printable {
 
 	public int getAccuracy() {
 		return accuracy;
+	}
+	
+	public StatusCondition getStatus() {
+		return statusEffect;
 	}
 
 	// Methods

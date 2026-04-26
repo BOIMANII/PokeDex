@@ -9,6 +9,7 @@
 package pokeDex;
 
 import java.util.Scanner;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class BattleEngine {
@@ -17,7 +18,7 @@ public class BattleEngine {
 	
 	private Trainer computer;
 	
-	private Scanner sc = new Scanner(System.in);
+	private static Scanner sc = new Scanner(System.in);
 	private Random rand = new Random();
 	
 	// Constructor: Takes a Trainer player and a Trainer computer. Initialize the Scanner (e.g., new 
@@ -267,13 +268,14 @@ public class BattleEngine {
 	 * @return void
 	 */
 	public void startBattle() {
+		boolean first = true;
 		while (player.hasLost() == false && computer.hasLost() == false) {
 			computer.getActivePokemon().printInfo();
 			player.getActivePokemon().printInfo();
 			try {
 				System.out.print("Enter which move you want to do (please enter an integer 1 - 4): ");
-				int selection = sc.nextInt();
-				sc.nextLine();
+				int selection = newSelection(first);
+				first = false;
 				System.out.println();
 				if (selection > 4 || selection < 1) {
 					System.out.println("Please choose an integer 1-4 inclusive");
@@ -286,6 +288,35 @@ public class BattleEngine {
 				System.out.println("Incorrect entry format, try again");
 			}
 		}
+	}
+	
+	/**
+	 * Lets user enter selection and does data verification
+	 * Returns 0 if invalid selection is made (if it is invalid, or already chosen, or out of bounds)
+	 * Otherwise returns the selection
+	 * Requires a list of selections already made as well as a boolean describing if it is the first time this is called or not
+	 * (For purposes of clearing the scanner before reaching it)
+	 * 
+	 * @param ArrayList<Integer> alreadyChosen
+	 * @param boolean first
+	 * @return
+	 */
+	public static int newSelection(boolean first) {
+		int selection = 0;
+		try {
+			if (first == false) {
+				sc.nextLine();
+			}
+			selection = sc.nextInt();
+			if (selection < 1 || selection > 4) {
+				System.out.println("Out of bounds");
+				return 0;
+			}
+		} catch (Exception e) {
+			System.out.println("Invalid selection, try again");
+			return 0;
+		}
+		return selection;
 	}
 
 }

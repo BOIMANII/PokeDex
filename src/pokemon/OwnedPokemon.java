@@ -72,7 +72,7 @@ public class OwnedPokemon implements Printable {
         System.out.println("Sp. Atk  : " + currentSpA);
         System.out.println("Sp. Def  : " + currentSpD);
         System.out.println("Speed    : " + currentSpe);
-        System.out.println("\n--------------------\n");
+        System.out.println("--------------------\n");
     }
     public void printInfoSimple() {
     	System.out.println("--- Pokemon Info ---");

@@ -87,15 +87,12 @@ public class BattleEngine {
 			}
 		}
 		
+		if(!(rand.nextInt(1, 101) <= move.getAccuracy())) {
+			System.out.println("The attack misses!");
+			canAttack = false;
+		}
 		
-		
-		// TODO
-		// What about accuracy?
-		// TODO
-		
-		
-		
-		// Execute attack if attack can be made
+		// Execute attack if attack can be/is made
 		if (canAttack == true) {
 			if (move.getCategory().equals("Physical") || move.getCategory().equals("Special")) {
 				int damage = calculateDamage(attacker, move, defender);

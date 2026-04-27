@@ -11,6 +11,7 @@
  */
 
 package moves;
+
 import pokemon.*;
 
 public abstract class Move implements Printable {
@@ -65,8 +66,6 @@ public abstract class Move implements Printable {
 		setAccuracy(accuracy);
 	}
 
-	
-
 	// Getters for each variable
 	public String getName() {
 		return name;
@@ -83,7 +82,7 @@ public abstract class Move implements Printable {
 	public int getAccuracy() {
 		return accuracy;
 	}
-	
+
 	public StatusCondition getStatus() {
 		return statusEffect;
 	}

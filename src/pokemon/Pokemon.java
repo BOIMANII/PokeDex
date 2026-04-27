@@ -1,3 +1,10 @@
+/**
+ * @author Anthony
+ * @date 2026-04-10
+ * @teacher Mr. Smintich
+ * 
+ * This is the pokemon class of the pokemon assignment
+ */
 package pokemon;
 
 public class Pokemon {
@@ -11,9 +18,10 @@ public class Pokemon {
 	private int spA;
 	private int spD;
 	private int spe;
-	
-	//Construction 
-	public Pokemon(String name, int pokedex, Type type1, Type type2, int hp, int atk, int def, int spA, int spD, int spe) {
+
+	// Construction
+	public Pokemon(String name, int pokedex, Type type1, Type type2, int hp, int atk, int def, int spA, int spD,
+			int spe) {
 		setName(name);
 		setDex(pokedex);
 		setType1(type1);
@@ -25,6 +33,7 @@ public class Pokemon {
 		setSpD(spD);
 		setSpe(spe);
 	}
+
 	public Pokemon(String name, int pokedex, Type type1, int hp, int atk, int def, int spA, int spD, int spe) {
 		this.name = name;
 		this.pokedex = pokedex;
@@ -36,93 +45,122 @@ public class Pokemon {
 		this.spD = spD;
 		this.spe = spe;
 	}
-	
-	//Getters
-	public String getName() { return name;}
-	public int getDex() { return pokedex;}
-	public Type getType1() { return type1;}
-	public Type getType2() { return type2;}
-	public int getHp() { return hp;}
-	public int getAtk() { return atk;}
-	public int getDef() { return def;}
-	public int getSpA() { return spA;}
-	public int getSpD() { return spD;}
-	public int getSpe() { return spe;}
-	
-	//Setters
+
+	// Getters
+	public String getName() {
+		return name;
+	}
+
+	public int getDex() {
+		return pokedex;
+	}
+
+	public Type getType1() {
+		return type1;
+	}
+
+	public Type getType2() {
+		return type2;
+	}
+
+	public int getHp() {
+		return hp;
+	}
+
+	public int getAtk() {
+		return atk;
+	}
+
+	public int getDef() {
+		return def;
+	}
+
+	public int getSpA() {
+		return spA;
+	}
+
+	public int getSpD() {
+		return spD;
+	}
+
+	public int getSpe() {
+		return spe;
+	}
+
+	// Setters
 	public void setName(String name) {
-	    this.name = name;
+		this.name = name;
 	}
 
 	public void setDex(int pokedex) {
-		if(pokedex <= 0) {
+		if (pokedex <= 0) {
 			System.out.println("setDex invalid input: Negitive Number");
 			return;
 		}
-	    this.pokedex = pokedex;
+		this.pokedex = pokedex;
 	}
 
 	public void setType1(Type type1) {
-		this.type1 = type1;//Temporary. Reminder to fix data valadation later
+		this.type1 = type1;
 	}
 
 	public void setType2(Type type2) {
-		this.type2 = type2; //Temporary. Reminder to fix data valadation later
+		this.type2 = type2; 
 	}
 
 	public void setHp(int hp) {
-		if(hp <= 0) {
+		if (hp <= 0) {
 			System.out.println("setHp invalid input: Negitive Number");
 			return;
 		}
-	    this.hp = hp;
+		this.hp = hp;
 	}
 
 	public void setAtk(int atk) {
-		if(atk <= 0) {
+		if (atk <= 0) {
 			System.out.println("setAtk invalid input: Negitive Number");
 			return;
 		}
-	    this.atk = atk;
+		this.atk = atk;
 	}
 
 	public void setDef(int def) {
-		if(def <= 0) {
+		if (def <= 0) {
 			System.out.println("setDef invalid input: Negitive Number");
 			return;
 		}
-	    this.def = def;
+		this.def = def;
 	}
 
 	public void setSpA(int spA) {
-		if(spA <= 0) {
+		if (spA <= 0) {
 			System.out.println("setSpA invalid input: Negitive Number");
 			return;
 		}
-	    this.spA = spA;
+		this.spA = spA;
 	}
 
 	public void setSpD(int spD) {
-		if(spD <= 0) {
+		if (spD <= 0) {
 			System.out.println("setSpD invalid input: Negitive Number");
 			return;
 		}
-	    this.spD = spD;
+		this.spD = spD;
 	}
 
 	public void setSpe(int spe) {
-		if(spe <= 0) {
+		if (spe <= 0) {
 			System.out.println("setSpe invalid input: Negitive Number");
 			return;
 		}
-	    this.spe = spe;
+		this.spe = spe;
 	}
-	
-	// Prints out pokemon information in rows. 
+
+	// Prints out pokemon information in rows.
 	public void printInfo() {
 		System.out.println("Name: " + this.name);
 		System.out.println("Index: " + this.pokedex);
-		System.out.println("Type 1: " + this.type1);			
+		System.out.println("Type 1: " + this.type1);
 		System.out.println("Type 2: " + this.type2);
 		System.out.println("Attack: " + this.atk);
 		System.out.println("Defense: " + this.def);
@@ -130,5 +168,5 @@ public class Pokemon {
 		System.out.println("Special Defense: " + this.spD);
 		System.out.println("Special Speed: " + this.spe);
 	}
-	
+
 }

@@ -1,5 +1,6 @@
 /**
  * @author Max
+ * @author Anthony
  * @date 2026-04-24
  * @teacher Steve Smintich
  * 
@@ -14,30 +15,31 @@ import moves.*;
 import pokemon.*;
 
 public class BattleEngine {
-	
+
 	private Trainer player;
-	
+
 	private Trainer computer;
-	
+
 	private static Scanner sc = new Scanner(System.in);
 	private Random rand = new Random();
-	
-	// Constructor: Takes a Trainer player and a Trainer computer. Initialize the Scanner (e.g., new 
+
+	// Constructor: Takes a Trainer player and a Trainer computer. Initialize the
+	// Scanner (e.g., new
 	// Scanner(System. in)).
 	public BattleEngine(Trainer player, Trainer computer) {
 		this.player = player;
 		this.computer = computer;
 	}
-	
+
 	/**
-	 * Calculates the damage an attack does
-	 * damage = ((2 * level / 5 + 2) * power * effectiveAtk / effectiveDef) / 50 + 2
-	 * Physical moves use attack and defense, special moves use special attack and special defense
-	 * Calculated damage is then multiplied by 1, 1/2 or 2 depending on the type of attack and the target 
+	 * Calculates the damage an attack does damage = ((2 * level / 5 + 2) * power *
+	 * effectiveAtk / effectiveDef) / 50 + 2 Physical moves use attack and defense,
+	 * special moves use special attack and special defense Calculated damage is
+	 * then multiplied by 1, 1/2 or 2 depending on the type of attack and the target
 	 * pokemon's defense
 	 * 
 	 * @param OwnedPokemon attacker
-	 * @param Move move
+	 * @param Move         move
 	 * @param OwnedPokemon defender
 	 * @return int
 	 */
@@ -51,32 +53,31 @@ public class BattleEngine {
 			attack = attacker.getCurrentSpA();
 			defense = defender.getCurrentSpD();
 		}
-		
-		int damage = ((((2 * attacker.getLevel() / 5) + 2) * move.getPower() * attack )/ defense) / 50 + 2;
-		
+
+		int damage = ((((2 * attacker.getLevel() / 5) + 2) * move.getPower() * attack) / defense) / 50 + 2;
+
 		double effectiveness1 = Type.getEffectiveness(move.getType(), defender.getBase().getType1());
 		double effectiveness2 = 1;
 		if (defender.getBase().getType2() == Type.NONE) {
 			effectiveness2 = Type.getEffectiveness(move.getType(), defender.getBase().getType2());
 		}
 		damage = (int) (damage * effectiveness1 * effectiveness2);
-		
+
 		return damage;
-		
+
 	}
-	
+
 	/**
-	 * Executes an attack
-	 * First checks to see if attack can be made, then deals damage if not a status move and then calls 
-	 * applyMoveEffect()
+	 * Executes an attack First checks to see if attack can be made, then deals
+	 * damage if not a status move and then calls applyMoveEffect()
 	 * 
 	 * @param OwnedPokemon attacker
-	 * @param Move move
+	 * @param Move         move
 	 * @param OwnedPokemon defender
 	 * @return void
 	 */
 	public void executeAttack(OwnedPokemon attacker, Move move, OwnedPokemon defender) {
-		
+
 		// Check if move can be made (attacker cannot be asleep or in paralysis)
 		boolean canAttack = true;
 		if (attacker.getSleepCounter() != 0) {
@@ -88,36 +89,48 @@ public class BattleEngine {
 				System.out.println("The attack fails because " + attacker.getBase().getName() + " is paralyzed");
 			}
 		}
-		
-		if(!(rand.nextInt(1, 101) <= move.getAccuracy())) {
-			System.out.println("The attack misses!");
+
+		if (!(rand.nextInt(1, 101) <= move.getAccuracy())) {
+			System.out.println(attacker.getBase().getName() + " missed " + defender.getBase().getName() + "!");
 			canAttack = false;
 		}
-		
+
 		if (canAttack == true) {
+			int damage = 0;
 			if (move.getCategory().equals("Physical") || move.getCategory().equals("Special")) {
-				int damage = calculateDamage(attacker, move, defender);
+				damage = calculateDamage(attacker, move, defender);
 				defender.setCurrentHp(defender.getCurrentHp() - damage);
-				System.out.println(attacker.getBase().getName() + " used "+move.getName() + " and hit "
+			}
+			if (move.getCategory().equals("Status")) {
+				if(move.isStatAffectsUser()) {
+					System.out.println(attacker.getBase().getName() + " used " + move.getName() + " on "
+							+ attacker.getBase().getName());
+				}else { 
+				System.out.println(attacker.getBase().getName() + " used " + move.getName() + " on "
+						+ defender.getBase().getName());
+				}
+			} else {
+
+				System.out.println(attacker.getBase().getName() + " used " + move.getName() + " and hit "
 						+ defender.getBase().getName() + " for " + damage + " Damage");
+				
 			}
 			applyMoveEffect(attacker, move, defender);
 		}
-		
-	}
-		
 
-	
+	}
+
 	/**
-	 * Applies the move's non-damage effects: Applies status and stat changes appropriately
+	 * Applies the move's non-damage effects: Applies status and stat changes
+	 * appropriately
 	 * 
 	 * @param OwnedPokemon user
-	 * @param Move move
+	 * @param Move         move
 	 * @param OwnedPokemon target
 	 * @return void
 	 */
 	public void applyMoveEffect(OwnedPokemon user, Move move, OwnedPokemon target) {
-		
+
 		// Status conditions
 		if (move.getStatusChance() > 0) {
 			if (rand.nextDouble(0, 1) <= move.getStatusChance()) {
@@ -130,51 +143,56 @@ public class BattleEngine {
 				}
 			}
 		}
-		
+
 		// Stat changes
 		if (move.getStatAffected() != null) {
 			if (move.isStatAffectsUser()) {
 				user.applyStatChange(move.getStatAffected(), move.getStatStages());
 				// Display an accurate one line comment on stat changes if applicable
 				if (move.getStatStages() > 0) {
-					System.out.println(user.getBase().getName() + " used " + move.getName() + " on " + target.getBase().getName());
+					System.out.println(user.getBase().getName() + "'s  " + move.getName() + " affected "
+							+ user.getBase().getName());
 					System.out.println(user.getBase().getName() + "'s " + move.getStatAffected() + " rose");
 				} else if (move.getStatStages() < 0) {
-					System.out.println(user.getBase().getName() + " used " + move.getName() + " on " + target.getBase().getName());
+					System.out.println(user.getBase().getName() + "'s " + move.getName() + " affected "
+							+ user.getBase().getName());
 					System.out.println(user.getBase().getName() + "'s " + move.getStatAffected() + " fell");
 				}
 			} else {
 				target.applyStatChange(move.getStatAffected(), move.getStatStages());
 				// Display an accurate one line comment on stat changes if applicable
 				if (move.getStatStages() > 0) {
-					System.out.println(user.getBase().getName() + " used " + move.getName() + " on " + target.getBase().getName());
+					System.out.println(user.getBase().getName() + "'s " + move.getName() + " affected "
+							+ target.getBase().getName());
 					System.out.println(target.getBase().getName() + "'s " + move.getStatAffected() + " rose");
 				} else if (move.getStatStages() < 0) {
-					System.out.println(user.getBase().getName() + " used " + move.getName() + " on " + target.getBase().getName());
+					System.out.println(user.getBase().getName() + "'s " + move.getName() + " affected "
+							+ target.getBase().getName());
 					System.out.println(target.getBase().getName() + "'s " + move.getStatAffected() + " fell");
 				}
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * Executes one turn after taking in both pokemon's attacks
 	 * 
-	 * @param Move playerMove
+	 * @param Move         playerMove
 	 * @param OwnedPokemon playermon
-	 * @param Move computerMove
+	 * @param Move         computerMove
 	 * @param OwnedPokemon computermon
 	 * @return void
 	 */
-	public void executeTurn (Move playerMove,Move computerMove) {
-		
-		// Compare speeds to determine first and second pokemon - true means player's attack is faster
+	public void executeTurn(Move playerMove, Move computerMove) {
+
+		// Compare speeds to determine first and second pokemon - true means player's
+		// attack is faster
 		boolean faster;
 		if (player.getActivePokemon().getEffectiveSpe() > computer.getActivePokemon().getEffectiveSpe()) {
 			faster = true;
 		} else if (player.getActivePokemon().getEffectiveSpe() == computer.getActivePokemon().getEffectiveSpe()) {
-			if (rand.nextInt(0,2) == 0) {
+			if (rand.nextInt(0, 2) == 0) {
 				faster = true;
 			} else {
 				faster = false;
@@ -182,16 +200,18 @@ public class BattleEngine {
 		} else {
 			faster = false;
 		}
-		
+
 		// Execute player's attack first if they are faster
 		if (faster == true) {
 			// Player first
 			executeAttack(player.getActivePokemon(), playerMove, computer.getActivePokemon());
 			if (computer.getActivePokemon().isFainted() && computer.hasLost() == false) {
-				System.out.println(computer.getActivePokemon().getBase().getName() + " has fainted - switching pokemon");
+				System.out
+						.println(computer.getActivePokemon().getBase().getName() + " has fainted - switching pokemon");
 				computer.switchToNext();
 				applyEndOfTurnEffects(player.getActivePokemon(), player);
-				// TODO - if you kill the opponent before they attack, is it the end of the turn? (assuming yes)
+				// TODO - if you kill the opponent before they attack, is it the end of the
+				// turn? (assuming yes)
 				return;
 			} else if (computer.getActivePokemon().isFainted() && computer.hasLost()) {
 				System.out.println(computer.getActivePokemon().getBase().getName() + " has fainted - you win!");
@@ -205,17 +225,17 @@ public class BattleEngine {
 			} else if (player.getActivePokemon().isFainted() && player.hasLost()) {
 				System.out.println(player.getActivePokemon().getBase().getName() + " has fainted - computer wins!");
 			}
-		// Execute computer first turn if applicable
+			// Execute computer first turn if applicable
 		} else {
 			// Computer first
 			executeAttack(computer.getActivePokemon(), computerMove, player.getActivePokemon());
 			if (player.getActivePokemon().isFainted() && player.hasLost() == false) {
 				System.out.println(player.getActivePokemon().getBase().getName() + " has fainted - switching pokemon");
 				player.switchToNext();
-				
+
 				// TODO - if you kill the opponent before they attack, is it the end of the
 				// turn? (assuming yes)
-				
+
 				applyEndOfTurnEffects(computer.getActivePokemon(), computer);
 				return;
 			} else if (player.getActivePokemon().isFainted() && player.hasLost()) {
@@ -225,34 +245,41 @@ public class BattleEngine {
 			// Player next, assuming they survive
 			executeAttack(player.getActivePokemon(), playerMove, computer.getActivePokemon());
 			if (computer.getActivePokemon().isFainted() && computer.hasLost() == false) {
-				System.out.println(computer.getActivePokemon().getBase().getName() + " has fainted - switching pokemon");
+				System.out
+						.println(computer.getActivePokemon().getBase().getName() + " has fainted - switching pokemon");
 				computer.switchToNext();
 			} else if (computer.getActivePokemon().isFainted() && computer.hasLost()) {
 				System.out.println(computer.getActivePokemon().getBase().getName() + " has fainted - you win!");
 			}
-			
+
 		}
-		
+
 		// applyEndOfTurnEffects() on both active Pokémon
 		applyEndOfTurnEffects(player.getActivePokemon(), player);
 		applyEndOfTurnEffects(computer.getActivePokemon(), computer);
-		
+
 	}
-	
+
 	/**
 	 * Applies end of turn updates to pokemon based on status conditions
 	 * 
 	 * @param OwnedPokemon pokemon
-	 * @param Trainer trainer
+	 * @param Trainer      trainer
 	 * @return void
 	 */
 	public void applyEndOfTurnEffects(OwnedPokemon pokemon, Trainer trainer) {
-		// The burned status condition causes pokemon to lose 1/16 of their full HP at the end of each turn
-		// So does the poisoned status, which I am including as a part of the end of turn effects
+		// The burned status condition causes pokemon to lose 1/16 of their full HP at
+		// the end of each turn
+		// So does the poisoned status, which I am including as a part of the end of
+		// turn effects
 		if (pokemon.getStatus() == StatusCondition.BURNED || pokemon.getStatus() == StatusCondition.POISONED) {
 			int damage = pokemon.getMaxHp() / 16;
+			if (damage < 1) {
+				damage = 1;
+			}
 			pokemon.setCurrentHp(pokemon.getCurrentHp() - damage);
-			System.out.println(pokemon.getBase().getName() + " was " + pokemon.getStatus().getDisplayName());
+			System.out.println(pokemon.getBase().getName() + " was " + pokemon.getStatus().getDisplayName() + " for "
+					+ damage + " damage");
 			if (pokemon.isFainted() && trainer.hasLost() == false) {
 				System.out.println(pokemon.getBase().getName() + " has fainted - switching pokemon");
 				trainer.switchToNext();
@@ -260,7 +287,8 @@ public class BattleEngine {
 				if (trainer.getName().equalsIgnoreCase("computer")) {
 					System.out.println(trainer.getActivePokemon().getBase().getName() + " has fainted - you win!");
 				} else {
-					System.out.println(trainer.getActivePokemon().getBase().getName() + " has fainted - computer wins!");
+					System.out
+							.println(trainer.getActivePokemon().getBase().getName() + " has fainted - computer wins!");
 				}
 			}
 		} else if (pokemon.getStatus() == StatusCondition.ASLEEP && pokemon.getSleepCounter() > 0) {
@@ -271,11 +299,11 @@ public class BattleEngine {
 			}
 		}
 	}
-	
+
 	/**
-	 * Is the method called in Main to run the game
-	 * Will take both trainers and keep running executeTurn until one trainer loses
-	 * Trainers must be fully initialized (with the pokemon they train)
+	 * Is the method called in Main to run the game Will take both trainers and keep
+	 * running executeTurn until one trainer loses Trainers must be fully
+	 * initialized (with the pokemon they train)
 	 * 
 	 * @return void
 	 */
@@ -287,7 +315,8 @@ public class BattleEngine {
 			System.out.println(player.getName() + " Pokemon");
 			player.getActivePokemon().printInfoSimple();
 			try {
-				System.out.print("Enter numbers [1-4] to select move\nEnter number 5 to see more Pokemon info\nEnter number:");
+				System.out.print(
+						"Enter numbers [1-4] to select move\nEnter number 5 to see more Pokemon info\nEnter number:");
 				int selection = newSelection(first);
 				first = false;
 				System.out.println();
@@ -302,7 +331,7 @@ public class BattleEngine {
 				} else {
 					System.out.println("-------BATTLE-------");
 					Move playerSelection = player.getActivePokemon().getMoves()[selection - 1];
-					Move computerSelection = computer.getActivePokemon().getMoves()[rand.nextInt(0,4)];
+					Move computerSelection = computer.getActivePokemon().getMoves()[rand.nextInt(0, 4)];
 					executeTurn(playerSelection, computerSelection);
 					System.out.println("--------------------");
 				}
@@ -311,16 +340,16 @@ public class BattleEngine {
 			}
 		}
 	}
-	
+
 	/**
-	 * Lets user enter selection and does data verification
-	 * Returns 0 if invalid selection is made (if it is invalid, or already chosen, or out of bounds)
-	 * Otherwise returns the selection
-	 * Requires a list of selections already made as well as a boolean describing if it is the first time this is called or not
+	 * Lets user enter selection and does data verification Returns 0 if invalid
+	 * selection is made (if it is invalid, or already chosen, or out of bounds)
+	 * Otherwise returns the selection Requires a list of selections already made as
+	 * well as a boolean describing if it is the first time this is called or not
 	 * (For purposes of clearing the scanner before reaching it)
 	 * 
 	 * @param ArrayList<Integer> alreadyChosen
-	 * @param boolean first
+	 * @param boolean            first
 	 * @return
 	 */
 	public static int newSelection(boolean first) {

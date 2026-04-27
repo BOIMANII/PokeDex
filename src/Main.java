@@ -1,3 +1,4 @@
+
 /**
  * @author Andy
  * @author Max
@@ -18,11 +19,11 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Main {
-	
+
 	public static Scanner sc = new Scanner(System.in);
-	
+
 	public static void main(String[] args) {
-		
+
 		// Declare + Initialize Pokemons
 		// Variable in order: Name PokeDex Type1 Type2 hp attack defense spA spD spE
 		Pokemon charizard = new Pokemon("Charizard", 6, Type.FIRE, Type.FLYING, 78, 84, 78, 109, 85, 100);
@@ -50,7 +51,8 @@ public class Main {
 		Move ironDefense = new StatusMove("Iron Defense", Type.NORMAL, 100, "def", 2, 1, true);
 		// Pikachu move set
 		Move growl = new StatusMove("Growl", Type.NORMAL, 100, "atk", -1, 1, false);
-		Move thunderBolt = new SpecialMove("Thunder Bolt", Type.ELECTRIC, 90, 100, StatusCondition.PARALYZED, 0.1, false);
+		Move thunderBolt = new SpecialMove("Thunder Bolt", Type.ELECTRIC, 90, 100, StatusCondition.PARALYZED, 0.1,
+				false);
 		Move spark = new SpecialMove("Spark", Type.ELECTRIC, 65, 100, StatusCondition.PARALYZED, 0.3, false);
 		// Tackle is also one of pikachu's moves
 		// Arbok move set
@@ -63,26 +65,26 @@ public class Main {
 		Move zenHeadbutt = new PhysicalMove("Zen Headbutt", Type.PSYCHIC, 80, 90);
 		Move psychic = new SpecialMove("Psychic", Type.PSYCHIC, 90, 100);
 		Move surf = new SpecialMove("Surf", Type.WATER, 90, 100);
-		
+
 		// Create 6 OwnedPokemon objects
 		// Variables in order: Pokemon base, int level, Move[] moves
-		Move[] charizardMoves = {airSlash, dragonClaw, ember, smokeScreen};
+		Move[] charizardMoves = { airSlash, dragonClaw, ember, smokeScreen };
 		OwnedPokemon ownedCharizard = new OwnedPokemon(charizard, charizardMoves);
-		Move[] venusaurMoves = {petalBlizzard, poisonPowder, sludgeWave, vineWhip};
+		Move[] venusaurMoves = { petalBlizzard, poisonPowder, sludgeWave, vineWhip };
 		OwnedPokemon ownedVenusaur = new OwnedPokemon(venusaur, venusaurMoves);
-		Move[] wartortleMoves = {tackle, icyWind, waterGun, ironDefense};
+		Move[] wartortleMoves = { tackle, icyWind, waterGun, ironDefense };
 		OwnedPokemon ownedWartortle = new OwnedPokemon(wartortle, wartortleMoves);
-		Move[] pikachuMoves = {growl, thunderBolt, spark, tackle};
+		Move[] pikachuMoves = { growl, thunderBolt, spark, tackle };
 		OwnedPokemon ownedPikachu = new OwnedPokemon(pikachu, pikachuMoves);
-		Move[] arbokMoves = {tackle, leer, acidSpray, screech};
+		Move[] arbokMoves = { tackle, leer, acidSpray, screech };
 		OwnedPokemon ownedArbok = new OwnedPokemon(arbok, arbokMoves);
-		Move[] slowbroMoves = {tackle, zenHeadbutt, psychic, surf};
+		Move[] slowbroMoves = { tackle, zenHeadbutt, psychic, surf };
 		OwnedPokemon ownedSlowbro = new OwnedPokemon(slowBro, slowbroMoves);
-		
+
 		// Get game set up
 		System.out.print("Enter name: ");
 		String name = sc.nextLine();
-		
+
 		// Let player choose 3 pokemon
 		ArrayList<OwnedPokemon> computerPokemonsList = new ArrayList<>();
 		computerPokemonsList.add(ownedCharizard);
@@ -94,7 +96,7 @@ public class Main {
 		ArrayList<OwnedPokemon> playerPokemonsList = new ArrayList<>();
 		ArrayList<Integer> alreadyChosen = new ArrayList<>();
 		boolean first = true;
-		while(!(alreadyChosen.size() == 3)) {
+		while (!(alreadyChosen.size() == 3)) {
 			System.out.println("Pokemon:");
 			System.out.println("1. Charizard");
 			System.out.println("2. Venusaur");
@@ -132,23 +134,61 @@ public class Main {
 				alreadyChosen.add(6);
 			}
 		}
-		
+
+		// Let user choose levels for all pokemon (level selection)
+		for (int i = 0; i < 3; i++) {
+			try {
+				System.out.print("Select level for your " + playerPokemonsList.get(i).getBase().getName() + ": ");
+				int level = sc.nextInt();
+				sc.nextLine();
+				if (level > 100 || level < 1) {
+					System.out.println("Level selected out of bounds, try again");
+					i--;
+				} else {
+					playerPokemonsList.get(i).setLevel(level);
+				}
+			} catch (Exception e) {
+				sc.nextLine();
+				System.out.println("Invalid selection, try again");
+				i--;
+			}
+		}
+		for (int i = 0; i < 3; i++) {
+			try {
+				System.out
+						.print("Select level for computer's " + computerPokemonsList.get(i).getBase().getName() + ": ");
+				int level = sc.nextInt();
+				sc.nextLine();
+				if (level > 100 || level < 1) {
+					System.out.println("Level selected out of bounds, try again");
+					i--;
+				} else {
+					computerPokemonsList.get(i).setLevel(level);
+				}
+			} catch (Exception e) {
+				sc.nextLine();
+				System.out.println("Invalid selection, try again");
+				i--;
+			}
+		}
+
 		OwnedPokemon[] playerPokemons = convertToArray(playerPokemonsList);
 		OwnedPokemon[] computerPokemons = convertToArray(computerPokemonsList);
-		
+
 		Trainer player = new Trainer(name, playerPokemons);
 		Trainer computer = new Trainer("Computer", computerPokemons);
-		
+
 		BattleEngine battle = new BattleEngine(player, computer);
 		battle.startBattle();
-		
+
 		sc.close();
-		
+
 	}
-	
+
 	/**
-	 * Converts an arraylist of OwnedPokemon to a normal OwnedPokemon[] array
-	 * Only works properly when there are 3 OwnedPokemon in the arraylist, post selection in main
+	 * Converts an arraylist of OwnedPokemon to a normal OwnedPokemon[] array Only
+	 * works properly when there are 3 OwnedPokemon in the arraylist, post selection
+	 * in main
 	 * 
 	 * @param ArrayList<OwnedPokemon> pokemonsList
 	 * @return OwnedPokemon[]
@@ -160,16 +200,16 @@ public class Main {
 		}
 		return pokemons;
 	}
-	
+
 	/**
-	 * Lets user enter selection and does data verification
-	 * Returns 0 if invalid selection is made (if it is invalid, or already chosen, or out of bounds)
-	 * Otherwise returns the selection
-	 * Requires a list of selections already made as well as a boolean describing if it is the first time this is called or not
+	 * Lets user enter selection and does data verification Returns 0 if invalid
+	 * selection is made (if it is invalid, or already chosen, or out of bounds)
+	 * Otherwise returns the selection Requires a list of selections already made as
+	 * well as a boolean describing if it is the first time this is called or not
 	 * (For purposes of clearing the scanner before reaching it)
 	 * 
 	 * @param ArrayList<Integer> alreadyChosen
-	 * @param boolean first
+	 * @param boolean            first
 	 * @return
 	 */
 	public static int newSelection(ArrayList<Integer> alreadyChosen, boolean first) {
